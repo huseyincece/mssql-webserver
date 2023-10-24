@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  mssql:
+    build:
+      context: ./MSSQL-Server
+      dockerfile: Dockerfile
+    ports:
+      - "1433:1433"
+    networks:
+      - my-network
+
+  webserver:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    depends_on:
+      - mssql
+    ports:
+      - "80:80"
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
